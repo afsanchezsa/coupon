@@ -1,5 +1,6 @@
 package com.coupons.sprgb.app.item.infrastructure.inbound.controllers;
 
+import com.coupons.sprgb.app.item.application.caseuse.ItemCaseUse;
 import com.coupons.sprgb.app.item.domain.client.ItemAPIClient;
 import com.coupons.sprgb.app.item.domain.dto.GetOptimalListDto;
 import com.coupons.sprgb.app.item.domain.dto.ItemDto;
@@ -19,10 +20,10 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class ItemController {
-    private final ItemAPIClient meliClient;
+    private final ItemCaseUse itemCaseUse;
     @GetMapping("/optimalList")
-    public ResponseEntity<List<ItemDto>>getOptimalItemList(@RequestBody GetOptimalListDto getOptimalListDto){
-        log.info("{}",meliClient.getItemData("MLA1448885331"));
-        return null;
+    public ResponseEntity<List<String>>getOptimalItemList(@RequestBody GetOptimalListDto getOptimalListDto){
+
+        return ResponseEntity.ok(itemCaseUse.getOptimalList(getOptimalListDto.getItemIds(), getOptimalListDto.getAmount()));
     }
 }
