@@ -2,6 +2,7 @@ package com.coupons.sprgb.app.item.application.service.impl;
 
 import com.coupons.sprgb.app.item.domain.client.ItemAPIClient;
 import com.coupons.sprgb.app.item.domain.dto.ItemDto;
+import com.coupons.sprgb.app.item.infrastructure.outbound.external.MLIFeignClient;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,8 @@ public class ItemServiceImplTest {
     private ItemServiceImpl itemService;
     @MockBean
     private ItemAPIClient itemAPIClient;
+    @MockBean
+    private MLIFeignClient mlClient;
 
     @Test
     void testDummyCase(){
@@ -83,12 +86,15 @@ public class ItemServiceImplTest {
         ItemDto item4 = ItemDto.builder().id("item4").price(15.0f).build();
 
 
-        when(itemAPIClient.getItemData("item1")).thenReturn(Optional.of(item1));
-        when(itemAPIClient.getItemData("item2")).thenReturn(Optional.of(item2));
-        when(itemAPIClient.getItemData("item3")).thenReturn(Optional.of(item3));
-        when(itemAPIClient.getItemData("item4")).thenReturn(Optional.of(item4));
-        when(itemAPIClient.getItemData(null)).thenReturn(Optional.empty());
-        when(itemAPIClient.getItemData("")).thenReturn(Optional.empty());
+
+
+
+        when(mlClient.getItemData("item1")).thenReturn(Optional.of(item1));
+        when(mlClient.getItemData("item2")).thenReturn(Optional.of(item2));
+        when(mlClient.getItemData("item3")).thenReturn(Optional.of(item3));
+        when(mlClient.getItemData("item4")).thenReturn(Optional.of(item4));
+        when(mlClient.getItemData(null)).thenReturn(Optional.empty());
+        when(mlClient.getItemData("")).thenReturn(Optional.empty());
 
 
         Map<String, Float> prices = itemService.getPrices(itemIds);
@@ -101,11 +107,11 @@ public class ItemServiceImplTest {
         assertEquals(15.0f, prices.get("item4"));
 
         // Verify interactions with API client
-        verify(itemAPIClient, times(1)).getItemData("item1");
-        verify(itemAPIClient, times(1)).getItemData("item2");
-        verify(itemAPIClient, times(1)).getItemData("item3");
-        verify(itemAPIClient, times(1)).getItemData("item4");
-        verify(itemAPIClient, times(0)).getItemData(null);
-        verify(itemAPIClient, times(0)).getItemData("");
+        verify(mlClient, times(1)).getItemData("item1");
+        verify(mlClient, times(1)).getItemData("item2");
+        verify(mlClient, times(1)).getItemData("item3");
+        verify(mlClient, times(1)).getItemData("item4");
+        verify(mlClient, times(0)).getItemData(null);
+        verify(mlClient, times(0)).getItemData("");
     }
 }
