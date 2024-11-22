@@ -16,7 +16,7 @@ public class ItemFallbackFactory implements FallbackFactory<MLIFeignClient> {
         return new MLIFeignClient() {
             @Override
             public Optional<ItemDto> getItemData(String itemId) {
-                log.error("error requesting item api:{} for itemId:{}",cause.getMessage(),itemId);
+                log.error("error requesting item api:{} for itemId:{}",cause,itemId);
                 return Optional.empty();
             }
         };
