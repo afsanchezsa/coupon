@@ -5,6 +5,7 @@ import com.coupons.sprgb.app.item.domain.client.ItemAPIClient;
 import com.coupons.sprgb.app.item.domain.dto.ItemDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -15,10 +16,21 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 @Slf4j
 public class ItemServiceImpl implements ItemService {
-    private final ItemAPIClient itemAPIClient;
+
+
+
+    //
+    //@Qualifier("cachedItemClient")
+    //@Qualifier("MLIFeignClientFeignClient")
+    private  ItemAPIClient itemAPIClient;
+
+    public ItemServiceImpl(@Qualifier("cachedItemClient")ItemAPIClient itemAPIClient){
+        this.itemAPIClient=itemAPIClient;
+    }
+
     @Value("${item.service.precision:1f}")
     private Float precision;
     @Value("${item.service.active.pain.limit:false}")
