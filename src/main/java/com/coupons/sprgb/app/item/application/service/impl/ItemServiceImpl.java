@@ -52,7 +52,7 @@ public class ItemServiceImpl implements ItemService {
         log.info("Initial coupon: {}", coupon);
 
         if (activePainLimit) {
-            Float residual = calculateResidual(roundedItems, items);
+            Float residual = calculateResidual(roundedItems, items,precision);
             log.info("Residual: {}", residual);
             if (exceedsPainLimit(residual)) {
                 coupon += (int) Math.floor(residual / precision);
@@ -93,9 +93,9 @@ public class ItemServiceImpl implements ItemService {
         return (int) Math.floor(amount / precision);
     }
 
-    private Float calculateResidual(Map<String, Integer> roundedItems, Map<String, Float> originalItems) {
+    private Float calculateResidual(Map<String, Integer> roundedItems, Map<String, Float> originalItems,Float precision) {
         return roundedItems.entrySet().stream()
-                .map(entry -> entry.getValue() - originalItems.get(entry.getKey()))
+                .map(entry -> (entry.getValue()*precision) - originalItems.get(entry.getKey()))
                 .reduce(0f, Float::sum);
     }
 
