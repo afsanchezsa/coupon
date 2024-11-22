@@ -52,7 +52,7 @@ public class ItemServiceImpl implements ItemService {
         log.info("Initial coupon: {}", coupon);
 
         if (activePainLimit) {
-            Float residual = calculateResidual(roundedItems, items);
+            Float residual = calculateResidual(roundedItems, items,precision);
             log.info("Residual: {}", residual);
             if (exceedsPainLimit(residual)) {
                 coupon += (int) Math.floor(residual / precision);
